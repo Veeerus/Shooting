@@ -12,7 +12,6 @@ public class SpriteAnimation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        sr = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -38,7 +37,9 @@ public class SpriteAnimation : MonoBehaviour
         animIndex = 0;
         this.sprite = sprite;
         this.delay = delay;
+        if (sr == null)
+            sr = GetComponent<SpriteRenderer>();
         sr.sprite = this.sprite[0];
-        animIndex = 1;
+        animIndex = 0;
     }
 }

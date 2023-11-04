@@ -6,16 +6,23 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private List<Sprite> normalSprite;
     [SerializeField] private List<Sprite> hitSprite;
+    [SerializeField] private List<Sprite> deadSprite;
     [SerializeField] private EBullet bullet;
+    [SerializeField] private Item[] items;
     public float Speed { get; set; }
+    public int HP { get; set; }
+    public int Score { get; set; }
     Transform firePos;
     SpriteAnimation sa;
     Player p;
     float fireDelayTimer;
-    const float fireDelayTime = 1f;
+    const float fireDelayTime = 0.8f;
     // Start is called before the first frame update
     void Start()
     {
+        HP = 100;
+        Score = 20;
+
         firePos = transform.GetChild(0);
         sa = GetComponent<SpriteAnimation>();
         sa.SetSprite(normalSprite, 0.2f);
@@ -55,10 +62,41 @@ public class Enemy : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        
+
         if (collision.GetComponent<PBullet>())
         {
+            
             Destroy(collision.gameObject);
-            Destroy(gameObject);
+            Hit((int)collision.GetComponent<PBullet>().Power);
+            //Destroy(gameObject);
+            if (HP <= 0)
+            {
+                Dead();
+            }
         }
     }
+    void Hit(int damage)
+    {
+        HP -= damage;
+        GetComponent<SpriteAnimation>().SetSprite(hitSprite, 0.2f,
+            () => GetComponent<SpriteAnimation>().SetSprite(normalSprite, 0.2f));
+    }
+    void Dead()
+    {
+        GetComponent<CapsuleCollider2D>().enabled = false;
+        GetComponent<Rigidbody2D>().simulated = false;
+        p = null;
+        UI.instance.Score += Score;
+        GetComponent<SpriteAnimation>().SetSprite(deadSprite, 0.1f, () =>
+        {
+             int rand = Random.Range(0, 100);
+             int spawnItemIndex = rand > 75 ? rand > 85 ? rand > 95 ? 2 : 1 : 0 : -1;
+             if (spawnItemIndex != -1)
+                 Instantiate(items[spawnItemIndex], transform.position, Quaternion.identity);
+
+             Destroy(gameObject);
+        });
+    }
 }
+

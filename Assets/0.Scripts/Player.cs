@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
         Left,
         Right,
     }
+    [SerializeField] private SceneChange sc;
     [SerializeField] private List<Sprite> normalSprite;
     [SerializeField] private List<Sprite> leftSprite;
     [SerializeField] private List<Sprite> rightSprite;
@@ -25,21 +26,22 @@ public class Player : MonoBehaviour
     //Transform 과 PBullet 은 클래스이다
     void Start()
     {
+        sc.OnAddUI();
         GetComponent<SpriteAnimation>().SetSprite(normalSprite, 0.2f);
     }
 
     // Update is called once per frame
     void Update()
     {
-        Move();
+        //Move();
         Fire();
         //transform.Translate(new Vector3(x, y, 0f) * Time.deltaTime * 6f);
     }
-    void Move()
+    public void Move(float aX,float aY)
     {
         float x = Input.GetAxisRaw("Horizontal") * Time.deltaTime * 6f;
         float y = Input.GetAxisRaw("Vertical") * Time.deltaTime * 6f;
-
+        //수정
         // -2.3 - 2.3
         float clampX = Mathf.Clamp(transform.position.x + x, -2.3f, 2.3f);
         float clampY = Mathf.Clamp(transform.position.y + y, -4.5f, 4.5f);
@@ -79,7 +81,14 @@ public class Player : MonoBehaviour
         if (collision.GetComponent<EBullet>())
         {
             Destroy(collision.gameObject);
-            Destroy(gameObject);
+            UI.instance.Life--;
+            UI.instance.SetLifeImage();
+            //Destroy(gameObject);
+        }
+        if (collision.GetComponent<Coin>())
+        {
+            Destroy(collision.gameObject);
+            UI.instance.Score += 10;
         }
     }
 }

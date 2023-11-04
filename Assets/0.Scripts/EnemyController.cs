@@ -7,7 +7,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private Enemy[] enemys;
     [SerializeField] private Player p;
     float spawnTimer;
-    const float spawnTime = 0.5f;
+    const float spawnTime = 2f;
     // Start is called before the first frame update
     void Start()
     {

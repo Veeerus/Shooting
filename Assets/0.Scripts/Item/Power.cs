@@ -10,6 +10,4 @@ public class Power : Item
         DownSpeed = 0.2f;
         GetComponent<SpriteAnimation>().SetSprite(sprites, 0.1f);
     }
-
-    
 }

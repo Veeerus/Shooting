@@ -8,44 +8,53 @@ public class Player : MonoBehaviour
     {
         Center,
         Left,
-        Right,
+        Right
     }
-    [SerializeField] private SceneChange sc;
+    [SerializeField] private GameObject[] bullets;
+
     [SerializeField] private List<Sprite> normalSprite;
     [SerializeField] private List<Sprite> leftSprite;
     [SerializeField] private List<Sprite> rightSprite;
-    [SerializeField] private float speed;
+
     [SerializeField] private Transform bulletParent;
+    [SerializeField] private float speed;
     [SerializeField] private float fireBulletDelayTime;
-    [SerializeField] private PBullet bullet;
+
     private Direction dir = Direction.Center;
-    private float fireDelayTimer;
-    
+
+    private float fireDealyTimer;
+
+    public int BulletLevel { get; set; } = 1;
     // Start is called before the first frame update
-    //float 는 자료형 말고 클래스도 포함
-    //Transform 과 PBullet 은 클래스이다
     void Start()
     {
-        sc.OnAddUI();
+        SceneChange.instance?.OnAddUI();
         GetComponent<SpriteAnimation>().SetSprite(normalSprite, 0.2f);
+        Invoke("GameStart", 2f);
+        
     }
-
+    void GameStart() => UI.instance.gameState = GameState.Play;
     // Update is called once per frame
     void Update()
     {
+        if (UI.instance == null || UI.instance.gameState != GameState.Play)
+            return;
+        Fire();
         //Move();
         Fire();
-        //transform.Translate(new Vector3(x, y, 0f) * Time.deltaTime * 6f);
     }
-    public void Move(float aX,float aY)
+
+    public void Move(float aX, float aY)
     {
-        float x = Input.GetAxisRaw("Horizontal") * Time.deltaTime * 6f;
-        float y = Input.GetAxisRaw("Vertical") * Time.deltaTime * 6f;
-        //수정
-        // -2.3 - 2.3
+        float x = aX * Time.deltaTime * speed;
+        float y = aY * Time.deltaTime * speed;
+
+
         float clampX = Mathf.Clamp(transform.position.x + x, -2.3f, 2.3f);
         float clampY = Mathf.Clamp(transform.position.y + y, -4.5f, 4.5f);
+
         transform.position = new Vector2(clampX, clampY);
+
         if (x < 0 && dir != Direction.Left)
         {
             dir = Direction.Left;
@@ -61,35 +70,60 @@ public class Player : MonoBehaviour
             dir = Direction.Center;
             GetComponent<SpriteAnimation>().SetSprite(normalSprite, 0.2f);
         }
-        //transform.Translate(new Vector3(x, y, 0f) * Time.deltaTime * 6f);
     }
+
     void Fire()
     {
-        fireDelayTimer += Time.deltaTime;
+        fireDealyTimer += Time.deltaTime;
         if (Input.GetMouseButton(0))
         {
-            if (fireDelayTimer > fireBulletDelayTime)
+            if(fireDealyTimer > fireBulletDelayTime)
             {
-                fireDelayTimer = 0;
-                PBullet b = Instantiate(bullet, transform.GetChild(0));
-                b.transform.SetParent(bulletParent);
+                fireDealyTimer = 0;
+                GameObject obj = Instantiate(bullets[BulletLevel-1], transform.GetChild(0));
+                obj.transform.SetParent(bulletParent);
             }
         }
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.GetComponent<EBullet>())
         {
             Destroy(collision.gameObject);
-            UI.instance.Life--;
-            UI.instance.SetLifeImage();
-            //Destroy(gameObject);
+            Hit();
         }
+
         if (collision.GetComponent<Coin>())
         {
             Destroy(collision.gameObject);
+
             UI.instance.Score += 10;
+        }
+        if (collision.GetComponent<Power>())
+        {
+            BulletLevel++;
+            if(BulletLevel >= bullets.Length)
+            {
+                BulletLevel = bullets.Length - 1;
+            }
+        }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.GetComponent<Enemy>())
+        {
+            Destroy(collision.gameObject);
+            Hit();
+        }
+    }
+    void Hit()
+    {
+        UI.instance.Life--;
+        UI.instance.SetLifeImage();
+        if (UI.instance.Life <= 0)
+        {
+            UI.instance.ShowGameOver();
         }
     }
 }
-//코드가 player에 있ㅇ,ㅡㅁㅕ

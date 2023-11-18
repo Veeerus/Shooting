@@ -17,9 +17,10 @@ public abstract class Enemy : MonoBehaviour
 
     protected Transform firePos;
     protected SpriteAnimation sa;
-
+    protected EnemyController ec;
     float fireDelayTimer;
     const float fireDelayTime = 1f;
+    List<EBullet> bullets = new List<EBullet>();
 
     // 테스트 코드
     Player p;
@@ -43,6 +44,7 @@ public abstract class Enemy : MonoBehaviour
         {
             fireDelayTimer = 0;
             EBullet b = Instantiate(bullet, firePos);
+            bullets.Add(b);
             b.Speed = 3f;
             b.transform.SetParent(null);
         }
@@ -65,25 +67,30 @@ public abstract class Enemy : MonoBehaviour
     {
         p = player;
     }
-
+    public void SetEnemyController(EnemyController enemyCont)
+    {
+        ec = enemyCont;
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.GetComponent<PBullet>())
         {
             Destroy(collision.gameObject);
             Hit((int)collision.GetComponent<PBullet>().Power);
-            if(HP <= 0)
-            {
-                Dead();
-            }
+            
         }
     }
 
-    void Hit(int damage)
+    public void Hit(int damage)
     {
         HP -= damage;
         GetComponent<SpriteAnimation>().SetSprite(hitSprite, 0.2f, 
             ()=> GetComponent<SpriteAnimation>().SetSprite(normalSprite, 0.2f));
+        if (HP <= 0)
+        {
+            BulletDelete();
+            Dead();
+        }
     }
 
     void Dead()
@@ -98,8 +105,21 @@ public abstract class Enemy : MonoBehaviour
             int spawnItemIndex = rand > 75 ? rand > 85 ? rand > 95 ? 2 : 1 : 0 : -1;
             if (spawnItemIndex != -1)
                 Instantiate(items[spawnItemIndex], transform.position, Quaternion.identity);
-
+            ec.DeleteEnemy(this);
             Destroy(gameObject); 
         });
+    }
+
+    void BulletDelete()
+    {
+        foreach (var item in bullets)
+        {
+            try
+            {
+                Destroy(item.gameObject);
+            }
+            catch (MissingReferenceException e) { }
+        }
+        bullets.Clear();
     }
 }

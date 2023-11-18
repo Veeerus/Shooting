@@ -102,11 +102,21 @@ public class Player : MonoBehaviour
         }
         if (collision.GetComponent<Power>())
         {
+
+
             BulletLevel++;
             if(BulletLevel >= bullets.Length)
             {
-                BulletLevel = bullets.Length - 1;
+                BulletLevel = bullets.Length;
             }
+
+            Destroy(collision.gameObject);
+        }
+        if (collision.GetComponent<Boom>())
+        {
+            collision.GetComponent<Boom>().Play();
+            Destroy(collision.gameObject);
+
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)

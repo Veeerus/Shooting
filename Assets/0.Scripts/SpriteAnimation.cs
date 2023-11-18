@@ -27,7 +27,7 @@ public class SpriteAnimation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (sprite.Count == 0)
+        if (sprite == null || sprite.Count == 0)
             return;
 
         timer += Time.deltaTime;
@@ -58,12 +58,12 @@ public class SpriteAnimation : MonoBehaviour
     /// <summary>
     /// 이미지 반복 함수 
     /// </summary>
-    public void SetSprite(List<Sprite> sprite, float delay)
+    public void SetSprite(List<Sprite> sprite, float delay,bool loop = true)
     {
         this.sprite = sprite.ToList();
         this.delay = delay;
         action = null;
-        loop = true;
+        this.loop = loop;
 
         if(sr == null)
             sr = GetComponent<SpriteRenderer>();

@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    public int bossspawntime = 0;
+    public int timer = 0;
     [SerializeField] private Enemy[] enemys;
     [SerializeField] private Player p;
-
+    List<Enemy> contEnemy = new List<Enemy>();
     float spawnTimer;
     const float spawnTime = 3f;
     // Start is called before the first frame update
     void Start()
     {
+        InvokeRepeating("bosstimer", 200f, 200f);
         
     }
 
@@ -28,6 +31,12 @@ public class EnemyController : MonoBehaviour
             int spawnIndex = rand < 70 ? 0 : rand < 90 ? 1 : 2;
             Enemy e = Instantiate(enemys[spawnIndex], Return_RandomPosition(), Quaternion.identity);
             e.SetPlayer(p);
+            e.SetEnemyController(this);
+            contEnemy.Add(e);
+        }
+        if (timer > 200)
+        {
+            
         }
     }
 
@@ -54,5 +63,20 @@ public class EnemyController : MonoBehaviour
 
         Vector3 respawnPosition = originPosition + RandomPostion;
         return respawnPosition;
+    }
+    public void DeleteEnemy(Enemy e)
+    {
+        contEnemy.Remove(e);
+    }
+    public void EnemyAffDelete()
+    {
+        foreach (var item in contEnemy)
+        {
+            item.Hit(99999999);
+        }
+    }
+    public void bosstimer()
+    {
+        
     }
 }

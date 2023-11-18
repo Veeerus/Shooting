@@ -9,13 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 850524452642287842}
-  - component: {fileID: 4574653834971994247}
+  - component: {fileID: 2772752811427268810}
   - component: {fileID: 7855061607620020824}
   - component: {fileID: 714880839754348720}
   - component: {fileID: 5126980118635739674}
   - component: {fileID: 6113356568888247317}
   m_Layer: 8
-  m_Name: Enemy2
+  m_Name: EnemyBoss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37,7 +37,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4574653834971994247
+--- !u!114 &2772752811427268810
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -46,25 +46,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 7483256191555526843}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2abab1dac2fb95b47b21fe0863511305, type: 3}
+  m_Script: {fileID: 11500000, guid: ab988809ade45fd40a49688c61289364, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normalSprite:
-  - {fileID: -8421458170528590454, guid: 138040323294fd440a3a823e5d70ad01, type: 3}
-  hitSprite:
-  - {fileID: 3714015224569861163, guid: 138040323294fd440a3a823e5d70ad01, type: 3}
-  deadSprite:
-  - {fileID: 5986030973748356752, guid: 54eba9c24be4c474180c23dcccfd6630, type: 3}
-  - {fileID: -5600206312213581617, guid: 54eba9c24be4c474180c23dcccfd6630, type: 3}
-  - {fileID: 3815954189206336483, guid: 54eba9c24be4c474180c23dcccfd6630, type: 3}
-  - {fileID: -3690502768834906923, guid: 54eba9c24be4c474180c23dcccfd6630, type: 3}
-  - {fileID: -49130668184793455, guid: 54eba9c24be4c474180c23dcccfd6630, type: 3}
-  - {fileID: -2330519403281856691, guid: 54eba9c24be4c474180c23dcccfd6630, type: 3}
-  bullet: {fileID: 925083524949758928, guid: 5a33483f4145cb34b9c3710ba1e9ce2d, type: 3}
-  items:
-  - {fileID: 7399557918805031373, guid: 2a52b4386a769484791b5702f55806f2, type: 3}
-  - {fileID: 3431882563865818753, guid: c2d468066ebe0ad4eaebc4660f8a78b8, type: 3}
-  - {fileID: 6543461298492482888, guid: bc54c8cffe3a8e349b7ff63f21d56b01, type: 3}
+  normalSprite: []
+  hitSprite: []
+  deadSprite: []
+  bullet: {fileID: 0}
+  items: []
 --- !u!212 &7855061607620020824
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -106,7 +95,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -8421458170528590454, guid: 138040323294fd440a3a823e5d70ad01, type: 3}
+  m_Sprite: {fileID: 2192450021786810173, guid: 138040323294fd440a3a823e5d70ad01, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -143,7 +132,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.8, y: 0.9}
+  m_Size: {x: 1.9, y: 1.6}
   m_Direction: 0
 --- !u!50 &6113356568888247317
 Rigidbody2D:

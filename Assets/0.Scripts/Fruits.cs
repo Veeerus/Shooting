@@ -21,10 +21,16 @@ public class Fruits : MonoBehaviour
         {
             this.transform.Translate(0.05f, 0, 0);
         }
-
-        
     }
 
 
-    
+
+    private void OnCollisionEnter2D(Collision2D Circle)
+    {
+        if (Circle.transform.GetComponent<FruitBullet>())
+        {
+            Destroy(Circle.gameObject);
+
+        }
+    }
 }

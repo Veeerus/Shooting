@@ -1132,6 +1132,7 @@ MonoBehaviour:
   - {fileID: 1818625692048225411, guid: 07ed4d6e68564ec4894af8217747ba52, type: 3}
   - {fileID: 1818625692048225411, guid: fdb8d326138ec854888512248a040adf, type: 3}
   - {fileID: 1818625692048225411, guid: ed98e764412b3784b9985497a7f4e63e, type: 3}
+  - {fileID: 1818625692048225411, guid: ed98e764412b3784b9985497a7f4e63e, type: 3}
   normalSprite:
   - {fileID: -2311659948842064771, guid: 6520dda4a70dfbf40a55b7af39ecda4e, type: 3}
   - {fileID: 7364682651488144517, guid: 6520dda4a70dfbf40a55b7af39ecda4e, type: 3}
